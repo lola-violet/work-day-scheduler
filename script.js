@@ -7,18 +7,15 @@ var saveBtn = $('.saveBtn');
 var textArea = $('.custom-area');
 
 
-// Use moment.js to display current date
+// Using moment.js to determine current date & display in jumbotron
 var dateToday = moment().format("dddd, MMMM Do");
 currentDay.text(dateToday);
 
-// Use moment.js to set timeblock colors based on past/present/future
-// var timeNow = moment().format("HH");
-
-blockColors();
-setInterval(blockColors, 60*1000);
-
+// Function to determine block colors
 function blockColors() {
+    // Using moment.js to determine current hour
     var timeNow = moment().format("HH");
+    // Conditional statement to determine class for each time block
     textArea.each(function() {
         let blockID = $(this).attr("id");
         if (blockID < timeNow) {
@@ -31,24 +28,16 @@ function blockColors() {
     })
 }
 
-
-// textArea.each(function() {
-//     let blockID = $(this).attr("id");
-//     if (blockID < timeNow) {
-//         console.log("future");
-//     } else if (blockID === timeNow) {
-//         console.log("present");
-//     } else if (blockID > timeNow) {
-//         console.log("past");
-//     }
-// })
+// Calls color function on pageload
+blockColors();
+// Interval which calls color function once per minute
+setInterval(blockColors, 60*1000);
 
 
-
-// Click event listener for save button
+// Click listener for save button
 saveBtn.click(saveData);
 
-// Save contents within textarea to local storage
+// Function to save contents within textarea to local storage
 function saveData(event) {
     event.preventDefault();
     let taskData = $(this).prev().val();
@@ -56,12 +45,8 @@ function saveData(event) {
     localStorage.setItem(timeBlock, taskData);
 }
 
-
-// Render saved contents to timeblocks on page load
-// localStorage.getItem("9")
-
+// Sets text content for each time block based on items saved in local storage
 textArea.each(function() {
     let blockID = $(this).attr("id");
-    // localStorage.getItem(blockID);
     $(this).val(localStorage.getItem(blockID));
 })
